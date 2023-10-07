@@ -1,35 +1,37 @@
-
-import { useStore , actions } from "./store"
-
+// import logo from './logo.svg';
+import { Button, Row } from "react-bootstrap";
+import "./App.scss";
+import Header from "./components/Header";
+import TableUsers from "./components/TableUser";
+import Container from "react-bootstrap/Container";
+import ModalsAdd from "./components/modalAddNew";
+import { useState } from "react";
 
 function App() {
-  const [state, dispatch] = useStore()
-  const { todos, todoInput } = state
-  console.log(state)
-
-  const handleAdd = () => {
-    dispatch(actions.addTodo(todoInput))
+  const [ isShowModalAddNew , setIsShowModalAddNew ] = useState(false)
+  const handleClose1= () => {
+    setIsShowModalAddNew(false)
   }
- 
-  console.log(state)
-  console.log(todos)
-  return(
-    <div>
-    
-    <input value={todoInput}
-    placeholder="Enter..." onChange={e => {
-      dispatch(actions.setTodoInput(e.target.value))
-    }}/>
-    <button onClick={handleAdd}>
-      Add
-    </button>
-  
-    {todos.map((todo , index) => (
-      <li key={index}>{todo}</li>
-    ))}
-    
-    </div>
-  )
+  return (
+    <div className="app-container">
+      {/* <Container> */}
+      {/* <Row> */}
+      <Header />
+      <Container>
+        <div className="my-3 add-new">
+          <span> <b>List users:</b></span>
 
+          <button class="btn btn-success" onClick={ () => setIsShowModalAddNew(true)}>Add new user</button>
+        </div>
+        <TableUsers />
+      </Container>
+      <ModalsAdd
+      show = {isShowModalAddNew}
+      handleClose = { handleClose1} />
+      {/* </Row>
+      </Container> */}
+    </div>
+  );
 }
-export default App
+
+export default App;
