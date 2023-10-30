@@ -6,31 +6,57 @@ import TableUsers from "./components/TableUser";
 import Container from "react-bootstrap/Container";
 import ModalsAdd from "./components/modalAddNew";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import Home from "./components/Home";
+import Login from "./components/Login";
+import { useContext ,useEffect } from "react";
+import { UserContext } from "./context/useContext";
+import AppRouts from "./routes/AppRoutes";
+import { useDispatch, useSelector } from "react-redux";
+import { handelRefresh } from "./redux/action/useraAction";
 
 function App() {
-  const [ isShowModalAddNew , setIsShowModalAddNew ] = useState(false)
-  const handleClose1= () => {
-    setIsShowModalAddNew(false)
-  }
-  return (
-    <div className="app-container">
-      {/* <Container> */}
-      {/* <Row> */}
-      <Header />
-      <Container>
-        <div className="my-3 add-new">
-          <span> <b>List users:</b></span>
+  // const dataUserRedux = useSelector( state => state.user.account)
+  const dispatch = useDispatch();
 
-          <button class="btn btn-success" onClick={ () => setIsShowModalAddNew(true)}>Add new user</button>
-        </div>
-        <TableUsers />
-      </Container>
-      <ModalsAdd
-      show = {isShowModalAddNew}
-      handleClose = { handleClose1} />
-      {/* </Row>
+  useEffect( () => {
+    if ( localStorage.getItem('token')) {
+      // loginContext( localStorage.getItem("email") , localStorage.getItem("token"))
+      dispatch(handelRefresh());
+    }
+
+
+  },[])
+
+  return (
+    <>
+      <div className="app-container">
+        {/* <Container> */}
+        {/* <Row> */}
+        <Header />
+
+        <Container>
+
+          {/* <TableUsers /> */}
+          <AppRouts />
+          {/* <Home /> */}
+        </Container>
+        {/* </Row>
       </Container> */}
-    </div>
+      </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+    </>
   );
 }
 
